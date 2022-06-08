@@ -1,1 +1,2 @@
 bb_car_detection/data/*
+bb_car_detection/model_weights_restnet50_backbone.pkl

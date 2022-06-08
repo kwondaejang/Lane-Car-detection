@@ -14,6 +14,7 @@ from torchvision.models.detection import faster_rcnn
 
 DEVICE = "cuda" if torch.cuda.is_available() else 'cpu'
 
+# Tranform function
 def get_transform(train):
   if train:
     return A.Compose(
@@ -30,6 +31,7 @@ def get_transform(train):
       bbox_params={'format': 'pascal_voc', 'label_fields': ['labels']}
     )
 
+# does 1 epoch of training
 def train(model, optimizer, loader, device, epoch):
     model.train()
     all_losses = []
@@ -68,25 +70,26 @@ def train(model, optimizer, loader, device, epoch):
         all_losses_dict['loss_objectness'].mean()
     ))
 
-
+# define train dataset
 train_Dataset = Dataset(
-    root_path_to_data=r'C:\Users\anshul\Documents\school\ECE228\bb_car_detection\data\train',
-    label_file=r'C:\Users\anshul\Documents\school\ECE228\bb_car_detection\data\bdd100k_labels_images_train.json',
+    root_path_to_data=r'C:\Users\anshul\Documents\school\ECE228\Lane-Car-detection\bb_car_detection\data\train',
+    label_file=r'C:\Users\anshul\Documents\school\ECE228\Lane-Car-detection\bb_car_detection\data\bdd100k_labels_images_train.json',
     #label_file=r'C:\Users\anshul\Documents\school\ECE228\bb_car_detection\short_train.json',
     transform=get_transform(True),
     width=512,
     height=256
     )
-
+# Define validation dataset
 valid_Dataset = Dataset(
-    root_path_to_data=r'C:\Users\anshul\Documents\school\ECE228\bb_car_detection\data\val',
-    label_file=r'C:\Users\anshul\Documents\school\ECE228\bb_car_detection\data\bdd100k_labels_images_val.json',
+    root_path_to_data=r'C:\Users\anshul\Documents\school\ECE228\Lane-Car-detection\bb_car_detection\data\val',
+    label_file=r'C:\Users\anshul\Documents\school\ECE228\Lane-Car-detection\bb_car_detection\data\bdd100k_labels_images_val.json',
     #label_file=r'C:\Users\anshul\Documents\school\ECE228\bb_car_detection\short_valid.json',
     transform=get_transform(False),
     width=512,
     height=256
     )
 
+# train and valid dataloaders
 data_loader_train = torch.utils.data.DataLoader(
         train_Dataset, batch_size=4, shuffle=True,
         collate_fn=collate_fn)
@@ -94,9 +97,11 @@ data_loader_valid = torch.utils.data.DataLoader(
     valid_Dataset, batch_size=1, shuffle=False,
     collate_fn=collate_fn)
 
+
+# Define model
 num_classes = 2  # vehicle and background. 
-#model = faster_rcnn.fasterrcnn_resnet50_fpn(pretrained=True)
-model =faster_rcnn.fasterrcnn_mobilenet_v3_large_fpn(weights=faster_rcnn.FasterRCNN_MobileNet_V3_Large_FPN_Weights)
+model = faster_rcnn.fasterrcnn_resnet50_fpn(pretrained=True)
+#model =faster_rcnn.fasterrcnn_mobilenet_v3_large_fpn(weights=faster_rcnn.FasterRCNN_MobileNet_V3_Large_FPN_Weights)
 
 
 in_features = model.roi_heads.box_predictor.cls_score.in_features
@@ -108,6 +113,7 @@ params = [p for p in model.parameters() if p.requires_grad]
 optimizer = torch.optim.SGD(params, lr=0.005,momentum=0.9, weight_decay=0.0005)
 lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
 
+# perform traning
 num_epochs = 10
 for epoch in range(num_epochs):
     #train(model, optimizer, data_loader_train, DEVICE, epoch)

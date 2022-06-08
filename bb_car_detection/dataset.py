@@ -37,8 +37,7 @@ class Dataset(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         img_path = os.path.join(self.root, self.image_data[idx].get('image_name'))
         boxes = []
-    
-
+        # read image and perform some preprocessing
         img = cv2.imread(img_path)
         img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB).astype(np.float32)
         img_res = cv2.resize(img_rgb, (self.width, self.height), cv2.INTER_AREA)
@@ -63,8 +62,8 @@ class Dataset(torch.utils.data.Dataset):
 
             boxes.append([x1_scaled, y1_scaled, x2_scaled, y2_scaled])
 
-        boxes= torch.as_tensor(boxes)
-        labels = torch.ones((num_objs,), dtype=torch.int64)  # only one class
+        boxes= torch.as_tensor(boxes) # gt bb
+        labels = torch.ones((num_objs,), dtype=torch.int64)  # only one class - car
         image_id = torch.tensor([idx])
         area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
         iscrowd = torch.zeros((num_objs,), dtype=torch.int64)  # to be used if zero
@@ -76,6 +75,7 @@ class Dataset(torch.utils.data.Dataset):
         targets["area"] = area
         targets["iscrowd"] = iscrowd
 
+        # perform transforms
         if self.transform:
             sample = self.transform(image = img_res,
                                 bboxes = targets['boxes'],
@@ -85,6 +85,5 @@ class Dataset(torch.utils.data.Dataset):
 
         
         return img_res, targets
-
 
 

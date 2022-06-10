@@ -34,7 +34,7 @@ The directory structure should look like:
     -bdd100k_labels_images_val.json
 
 Guide for training:
--Lane Detection
+- Lane Detection
     1. You must first run /lane_detection/utils/dataset_prepare.py this will parse the dataset, generate gt masks and put them in folders, text files that the dataloader will read. YOU MUST FIX THE PATHS IN THIS FILE TO SUIT YOUR ENV. If this runs correctly you will have the follwing directory structure in the dataset directory:
 
     -ground_truth_binary_seg
@@ -51,7 +51,7 @@ Guide for training:
 
     3. Once your done training you can either run lane_detection/lane.py to get f1 scores and accuracy. You must modfiy this file to account for model you want to evaluate. 
 
--Car Detection
+- Car Detection
     1. To train simply run train.py. Adapt all paths as necessary
     2. A model will be saved after each epoch
 

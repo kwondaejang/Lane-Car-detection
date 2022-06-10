@@ -19,8 +19,8 @@ Guide for downloading dataset:
 Download the trainset and test set
 the directory structure should look like:
 - data/
-    -test_set/
-    -train_set/
+    - test_set/
+    - train_set/
 
 
 2. For deep drive dataset download from https://bdd-data.berkeley.edu/

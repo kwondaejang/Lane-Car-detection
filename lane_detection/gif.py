@@ -120,7 +120,6 @@ model = SegNet().to(device=DEVICE)
 model.load_state_dict(torch.load(r'C:\Users\anshul\Documents\school\ECE228\final_project\model_weights\best_segnet_ftl_iou\epoch_34_loss_0.6171251664079469.tar')['state_dict'])
 model = model.eval()
 
-#model2=faster_rcnn.fasterrcnn_mobilenet_v3_large_fpn(weights=faster_rcnn.FasterRCNN_MobileNet_V3_Large_FPN_Weights.DEFAULT).to(DEVICE)
 model2= torch.load(r'C:\Users\anshul\Documents\school\ECE228\Lane-Car-detection\bb_car_detection\model_weights_mobilenet_backbone.pkl').to(DEVICE)
 model2.eval()
 

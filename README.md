@@ -18,33 +18,33 @@ Guide for downloading dataset:
 1. For Lane Detection download the dataset from https://github.com/TuSimple/tusimple-benchmark/issues/3
 Download the trainset and test set
 the directory structure should look like:
--data
-    -test_set
-    -train_set
+- data/
+    -test_set/
+    -train_set/
 
 
 2. For deep drive dataset download from https://bdd-data.berkeley.edu/
 Download the 100k version
 The directory structure should look like:
--data
-    -test
-    -train
-    -val
-    -bdd100k_labels_images_train.json
-    -bdd100k_labels_images_val.json
+- data/
+    - test/
+    - train/
+    - val/
+    - bdd100k_labels_images_train.json
+    - bdd100k_labels_images_val.json
 
 Guide for training:
 - Lane Detection
     1. You must first run /lane_detection/utils/dataset_prepare.py this will parse the dataset, generate gt masks and put them in folders, text files that the dataloader will read. YOU MUST FIX THE PATHS IN THIS FILE TO SUIT YOUR ENV. If this runs correctly you will have the follwing directory structure in the dataset directory:
+    - dataset / 
+        - ground_truth_binary_seg/
+        - ground_truth_image/
+        - ground_truth_instance_seg/
+        - dataset_image_paths.txt
+        - train_split.txt
+        - valid_split.txt
 
-    -ground_truth_binary_seg
-    -ground_truth_image
-    -ground_truth_instance_seg
-    -dataset_image_paths.txt
-    -train_split.txt
-    -valid_split.txt
-
-    NOTE: in order to produce a test dataset txt file, youll have to adapt the dataset_prepare.py accordingly (not that hard)
+    NOTE: in order to produce a test dataset txt file, youll have to adapt the dataset_prepare.py accordingly
 
     2. Now you are ready to train. Simply run python train.py
     NOTE: adapt all paths in this python file accordingly, hyperparamters are defined in this file as well. model/model.py defines the each model. As you train the best model will be saved

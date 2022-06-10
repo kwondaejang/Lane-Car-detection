@@ -1,3 +1,3 @@
 bb_car_detection/data/*
 bb_car_detection/model_weights_restnet50_backbone.pkl
-lane_detection/model_weights/*
+lane_detection/model_weights/best_segnet*
